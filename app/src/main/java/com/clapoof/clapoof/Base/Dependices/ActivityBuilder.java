@@ -3,8 +3,8 @@ package com.clapoof.clapoof.Base.Dependices;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
-import com.clapoof.clapoof.ui.home.LoginActivity;
-import com.clapoof.clapoof.ui.home.LoginModule;
+import com.clapoof.clapoof.ui.login.LoginActivity;
+import com.clapoof.clapoof.ui.login.LoginModule;
 
 
 /**

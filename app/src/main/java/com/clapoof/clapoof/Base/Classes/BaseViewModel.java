@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import com.clapoof.clapoof.Base.DataManager;
 import com.clapoof.clapoof.Base.rx.SchedulerProvider;
+import com.clapoof.clapoof.storage.BaseDataPackage;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
@@ -21,12 +23,14 @@ public abstract class BaseViewModel<N extends BaseNavigator> extends ViewModel {
     private final SchedulerProvider mSchedulerProvider;
     private final ObservableBoolean mIsLoading = new ObservableBoolean(false);
     private CompositeDisposable mCompositeDisposable;
+    private final BaseDataPackage baseDataPackage;
 
 
     public BaseViewModel(DataManager dataManager,
-                         SchedulerProvider schedulerProvider) {
+                         SchedulerProvider schedulerProvider, BaseDataPackage baseDataPackage) {
         this.mDataManager = dataManager;
         this.mSchedulerProvider = schedulerProvider;
+        this.baseDataPackage = baseDataPackage;
         this.mCompositeDisposable = new CompositeDisposable();
 
     }

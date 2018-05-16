@@ -1,4 +1,4 @@
-package com.clapoof.clapoof.ui.home;
+package com.clapoof.clapoof.ui.login;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

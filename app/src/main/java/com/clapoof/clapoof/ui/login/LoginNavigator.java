@@ -1,4 +1,4 @@
-package com.clapoof.clapoof.ui.home;
+package com.clapoof.clapoof.ui.login;
 
 import com.clapoof.clapoof.Base.Classes.BaseNavigator;
 

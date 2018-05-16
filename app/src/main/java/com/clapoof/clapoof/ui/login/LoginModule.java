@@ -1,7 +1,8 @@
-package com.clapoof.clapoof.ui.home;
+package com.clapoof.clapoof.ui.login;
 
 import com.clapoof.clapoof.Base.DataManager;
 import com.clapoof.clapoof.Base.rx.SchedulerProvider;
+import com.clapoof.clapoof.storage.BaseDataPackage;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,8 +15,8 @@ public class LoginModule {
 
     @Provides
     LoginViewModel provideLoginViewModel(DataManager dataManager,
-                                         SchedulerProvider schedulerProvider) {
-        return new LoginViewModel(dataManager, schedulerProvider);
+                                         SchedulerProvider schedulerProvider, BaseDataPackage baseDataPackage) {
+        return new LoginViewModel(dataManager, schedulerProvider,baseDataPackage);
     }
 
     @Provides

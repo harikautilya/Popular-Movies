@@ -16,6 +16,7 @@ import com.clapoof.clapoof.Base.Dependices.ActivityBuilder;
 import com.clapoof.clapoof.Base.Dependices.Modules.ApplicationModule;
 import com.clapoof.clapoof.Base.SharedPrefs;
 import com.clapoof.clapoof.Base.annotations.ApplicationContext;
+import com.clapoof.clapoof.storage.BaseDataPackage;
 
 
 /**
@@ -38,4 +39,6 @@ public interface ApplicationComponent {
     SharedPrefs getPreferenceHelper();
 
     DBHelper getDbHelper();
+
+    BaseDataPackage getBaseDataPackage();
 }
