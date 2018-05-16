@@ -2,7 +2,7 @@ package com.clapoof.clapoof.storage.match;
 
 import com.clapoof.clapoof.storage.BaseDataPackage;
 
-public class MatchRepo extends BaseDataPackage  implements MatchData{
+public class MatchRepo implements MatchData{
 
     private MatchData remoteData;
     private MatchData cloudData;
