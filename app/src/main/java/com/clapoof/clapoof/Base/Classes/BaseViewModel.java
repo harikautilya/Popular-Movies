@@ -63,6 +63,9 @@ public abstract class BaseViewModel<N extends BaseNavigator> extends ViewModel {
         mIsLoading.set(isLoading);
     }
 
+    public BaseDataPackage getBaseDataPackage() {
+        return baseDataPackage;
+    }
 
     public abstract void init(Bundle savedInstanceState, Context context);
 

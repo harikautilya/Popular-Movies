@@ -20,7 +20,7 @@ public class MatchRepo implements MatchData{
 
     @Override
     public void createTable() {
-
+        remoteData.createTable();
     }
 
     @Override
