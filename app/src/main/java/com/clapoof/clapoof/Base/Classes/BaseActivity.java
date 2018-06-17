@@ -20,29 +20,27 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-
+import com.clapoof.clapoof.Base.DataManager;
+import com.clapoof.clapoof.utils.Utils;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import dagger.android.AndroidInjection;
 import dagger.android.DispatchingAndroidInjector;
-import com.clapoof.clapoof.Base.DataManager;
-import com.clapoof.clapoof.utils.Utils;
 
 /**
  * Created by kautilya on 01/02/18.
  */
 
-public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel, N extends BaseNavigator> extends AppCompatActivity implements BaseFragment.Callback{
+public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel, N extends BaseNavigator> extends AppCompatActivity implements BaseNavigator, BaseFragment.Callback {
 
     public final String LOG_TAG = this.getClass().getName();
     private ProgressDialog mProgressDialog;
     protected final int PERMISSION_REQUEST = 101;
     private T mViewDataBinding;
-    private V mViewModel;
-    private Unbinder unbinder;
+
+    @Inject
+    V mViewModel;
 
     @Inject
     DispatchingAndroidInjector<Fragment> mFragmentInjector;
@@ -53,7 +51,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     @Inject
     DataManager dataManager;
 
-    public DataManager getDataManager() {
+    protected DataManager getDataManager() {
         return dataManager;
     }
 
@@ -69,8 +67,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     private void performDataBinding() {
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
-        unbinder = ButterKnife.bind(this);
-        this.mViewModel = mViewModel == null ? getViewModel() : mViewModel;
         mViewDataBinding.setVariable(getViewModelId(), mViewModel);
         mViewDataBinding.executePendingBindings();
     }
@@ -86,7 +82,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -123,11 +118,13 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         return false;
     }
 
+    @Override
     public void showLoading(String title, String message) {
         hideLoading();
         mProgressDialog = Utils.showLoadingDialog(this, title, message);
     }
 
+    @Override
     public void hideLoading() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.cancel();
@@ -142,18 +139,10 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         return navigator;
     }
 
-    /**
-     * Override for set view model
-     *
-     * @return view model instance
-     */
-    public abstract V getViewModel();
 
-    /**
-     * Override for set binding variable
-     *
-     * @return variable id
-     */
+    public V getViewModel() {
+        return mViewModel;
+    }
 
 
     /**
@@ -171,8 +160,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         AndroidInjection.inject(this);
     }
 
-
-
+    @Override
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
@@ -183,23 +171,25 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    permissionGranted();
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    permissionNotGranted();
                 }
             }
 
         }
     }
 
+    public void permissionGranted() {
+
+    }
+
+    public void permissionNotGranted() {
+
+    }
+
+    @Override
     public void showAlertDialog(String title, String message, String positiveText, DialogInterface.OnClickListener pClickListener, String negative, DialogInterface.OnClickListener nClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
@@ -213,7 +203,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         builder.create().show();
 
     }
-
 
 
 }

@@ -12,13 +12,9 @@ import javax.inject.Inject;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel, LoginNavigator> implements LoginNavigator {
 
-    @Inject
-    LoginViewModel loginViewModel;
 
-    @Override
-    public LoginViewModel getViewModel() {
-        return loginViewModel;
-    }
+
+
 
     @Override
     public int getLayoutId() {
@@ -32,6 +28,12 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     @Override
     public void init(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void changeText(int i) {
+        getViewDataBinding().countText.setText(i+"");
 
     }
 }

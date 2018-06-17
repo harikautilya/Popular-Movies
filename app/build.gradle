@@ -56,6 +56,8 @@ dependencies {
     //CardView
     implementation deps.android.support.cardView
 
+    implementation 'com.android.support:multidex:1.0.3'
+
     testImplementation deps.junit
     androidTestImplementation deps.android.support.test.runner
     androidTestImplementation deps.android.support.test.espressoCore

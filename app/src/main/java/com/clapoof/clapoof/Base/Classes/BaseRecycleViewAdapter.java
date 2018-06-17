@@ -4,8 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by kautilya on 06/02/18.
  */
@@ -32,7 +30,6 @@ public class BaseRecycleViewAdapter<K extends RecyclerView.ViewHolder> extends R
 
         public BaseViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
         }
     }
 }

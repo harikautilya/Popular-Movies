@@ -1,6 +1,7 @@
 package com.clapoof.clapoof.Base.Classes;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -11,11 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -55,11 +53,10 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
         mViewModel.setNavigator(mNavigator);
         mViewDataBinding.setVariable(getBindingVariable(), mNavigator);
         mViewDataBinding.executePendingBindings();
-        init(view,savedInstanceState);
+        init(view, savedInstanceState);
     }
 
     @Override
@@ -111,7 +108,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     }
 
 
-
     public K getNavigator() {
         return mNavigator;
     }
@@ -121,6 +117,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         void onFragmentAttached();
 
         void onFragmentDetached(String tag);
+
     }
 
     /**
