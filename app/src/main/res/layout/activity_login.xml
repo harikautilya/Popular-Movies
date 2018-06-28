@@ -4,7 +4,7 @@
     <data>
         <variable
             name="login_view"
-            type="com.clapoof.clapoof.ui.login.LoginViewModel" />
+            type="com.movies.book.ui.login.LoginViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
