@@ -1,5 +1,7 @@
 package com.movies.book.Base.Classes;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
@@ -11,6 +13,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.movies.book.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -20,15 +25,18 @@ import dagger.android.support.AndroidSupportInjection;
  * Created by kautilya on 01/02/18.
  */
 
-public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel, K extends BaseNavigator> extends Fragment {
+public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel, K extends BaseNavigator> extends Fragment implements BaseNavigator {
 
     protected final String LOG_TAG = this.getClass().getSimpleName();
     private BaseActivity mActivity;
-
+    private ProgressDialog mProgressDialog;
     private T mViewDataBinding;
-    private V mViewModel;
+
     private View mRootView;
 
+
+    @Inject
+    V mViewModel;
 
     @Inject
     K mNavigator;
@@ -125,7 +133,9 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
      *
      * @return view model instance
      */
-    public abstract V getViewModel();
+    public V getViewModel() {
+        return mViewModel;
+    }
 
     /**
      * Override for set binding variable
@@ -141,4 +151,41 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     int getLayoutId();
 
     public abstract void init(View view, Bundle savedInstances);
+
+
+    public abstract int getColor();
+
+
+    @Override
+    public void showAlertDialog(String title, String message, String positiveText, DialogInterface.OnClickListener pClickListener, String negative, DialogInterface.OnClickListener nClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        if (pClickListener != null)
+            builder.setPositiveButton(positiveText, pClickListener);
+
+        if (nClickListener != null) {
+            builder.setNegativeButton(negative, nClickListener);
+        }
+        builder.create().show();
+
+    }
+
+    @Override
+    public void showLoading(String title, String message) {
+        hideLoading();
+        mProgressDialog = Utils.showLoadingDialog(mActivity, title, message);
+    }
+
+    @Override
+    public void hideLoading() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.cancel();
+        }
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+    }
 }

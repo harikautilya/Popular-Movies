@@ -118,18 +118,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         return false;
     }
 
-    @Override
-    public void showLoading(String title, String message) {
-        hideLoading();
-        mProgressDialog = Utils.showLoadingDialog(this, title, message);
-    }
-
-    @Override
-    public void hideLoading() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.cancel();
-        }
-    }
 
     public T getViewDataBinding() {
         return mViewDataBinding;
@@ -158,11 +146,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     public void performDependencyInjection() {
         AndroidInjection.inject(this);
-    }
-
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
 
@@ -202,6 +185,24 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         }
         builder.create().show();
 
+    }
+
+    @Override
+    public void showLoading(String title, String message) {
+        hideLoading();
+        mProgressDialog = Utils.showLoadingDialog(this, title, message);
+    }
+
+    @Override
+    public void hideLoading() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.cancel();
+        }
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
 

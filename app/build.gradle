@@ -64,8 +64,6 @@ dependencies {
 
 
 
-
-
     implementation deps.rx.android
     implementation deps.rx.java
 

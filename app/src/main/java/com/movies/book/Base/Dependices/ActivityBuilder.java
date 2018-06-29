@@ -1,10 +1,12 @@
 package com.movies.book.Base.Dependices;
 
+import com.movies.book.ui.main.MainActivity;
+import com.movies.book.ui.main.MainModule;
+import com.movies.book.ui.main.fragment.popular.PopularProvider;
+import com.movies.book.ui.main.fragment.top.TopProvider;
+
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-
-import com.movies.book.ui.login.LoginActivity;
-import com.movies.book.ui.login.LoginModule;
 
 
 /**
@@ -13,10 +15,8 @@ import com.movies.book.ui.login.LoginModule;
 @Module
 public abstract class ActivityBuilder {
 
-    @ContributesAndroidInjector(modules = LoginModule.class)
-    abstract LoginActivity provideLoginActivity();
-
-
+    @ContributesAndroidInjector(modules = {MainModule.class, TopProvider.class, PopularProvider.class})
+    abstract MainActivity provideMainActivity();
 
 
 }
