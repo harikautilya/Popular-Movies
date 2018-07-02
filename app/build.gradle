@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.clapoof.clapoof"
+        applicationId "com.movies.book"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
@@ -20,6 +20,7 @@ android {
         }
     }
 }
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -44,14 +45,14 @@ dependencies {
     // RecyclerView
     implementation deps.android.support.recycleView
 
-    // Timber - Logging library
-    implementation deps.other.timber
-
     // Picasso - Image loading library
     implementation deps.other.picasso
 
     // Retofit - server data lib
     implementation deps.other.api
+
+    // Rating bar
+    implementation deps.other.rating
 
     //CardView
     implementation deps.android.support.cardView

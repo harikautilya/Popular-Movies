@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">clapoof-app-new</string>
+    <string name="app_name">BnC</string>
     <string name="click_me">Click me</string>
+    <string name="image_of_the_movie">Image of the movie</string>
+    <string name="adult_rated_or_not">Adult rated or not</string>
+    <string name="language_of_the_movie">Language of the movie</string>
+    <string name="navigation_image">Navigation Image</string>
+    <string name="image_of_the_movie_backdrop">Image of the movie backdrop</string>
+    <string name="vote_average">Vote average :</string>
+    <string name="release_date">Release Date :</string>
+    <string name="movie_description">Movie Description</string>
 </resources>

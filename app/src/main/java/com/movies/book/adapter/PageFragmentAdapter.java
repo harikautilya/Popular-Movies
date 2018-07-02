@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.movies.book.Base.Classes.BaseFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PageFragmentAdapter extends FragmentStatePagerAdapter {
@@ -17,10 +18,13 @@ public class PageFragmentAdapter extends FragmentStatePagerAdapter {
 
     public PageFragmentAdapter(FragmentManager fm, List<BaseFragment> fragments, List<String> pageTitles) {
         super(fm);
+        colors = new ArrayList<>();
         this.fragments = fragments;
         this.pageTitles = pageTitles;
-    }
 
+        for (BaseFragment baseFragment : fragments)
+            colors.add(baseFragment.getColor());
+    }
 
 
     @Override

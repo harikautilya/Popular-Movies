@@ -1,4 +1,4 @@
-package com.movies.book.ui.main.fragment.popular;
+package com.movies.book.ui.details;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,19 +8,17 @@ import com.movies.book.Base.DataManager;
 import com.movies.book.Base.rx.SchedulerProvider;
 import com.movies.book.api.RequestFactory;
 import com.movies.book.api.request.MovieListService;
-import com.movies.book.api.response.MoviesResponse;
+import com.movies.book.api.response.MovieDetailResponse;
 import com.movies.book.storage.BaseDataPackage;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PopularViewModel extends BaseViewModel<PopularNavigator> {
-    long page;
+public class DetailViewModel extends BaseViewModel<DetailNavigator> {
 
-    public PopularViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, BaseDataPackage baseDataPackage) {
+    public DetailViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, BaseDataPackage baseDataPackage) {
         super(dataManager, schedulerProvider, baseDataPackage);
-        page = 1;
     }
 
     @Override
@@ -29,22 +27,21 @@ public class PopularViewModel extends BaseViewModel<PopularNavigator> {
     }
 
 
-    public void getData(String apiKey) {
+    public void getData(String api, long movieID) {
         MovieListService movieListService = RequestFactory.createRetroFitService(MovieListService.class);
 
-
-        movieListService.getPopulatMovies(apiKey, page)
-                .enqueue(new Callback<MoviesResponse>() {
+        movieListService.getMovieDetails(movieID, api)
+                .enqueue(new Callback<MovieDetailResponse>() {
                     @Override
-                    public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                        getNavigator().populateList(response.body().getResults());
-                        page++;
+                    public void onResponse(Call<MovieDetailResponse> call, Response<MovieDetailResponse> response) {
+                        getNavigator().updateData(response.body());
                     }
 
                     @Override
-                    public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                    public void onFailure(Call<MovieDetailResponse> call, Throwable t) {
 
                     }
                 });
+
     }
 }

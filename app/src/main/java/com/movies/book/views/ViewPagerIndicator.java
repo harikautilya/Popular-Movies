@@ -2,6 +2,7 @@ package com.movies.book.views;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -17,7 +18,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -44,15 +44,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
     private float mPageOffset;
     private ViewPager.OnPageChangeListener mPageListener;
     private int mScrollState;
-    private boolean touched;
-    private float x;
-    private float y;
-    private int strokeColor;
-    private int backgroundColor;
-    private boolean equalFooting;
-    private boolean scrollable;
-    private String[] text;
-    private int[] icons;
     private View tabVIew;
     private int countPages;
     float mWidth;
@@ -75,6 +66,7 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
         this(context, attrs, 1);
     }
 
+    @SuppressLint("InflateParams")
     public ViewPagerIndicator(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
@@ -101,10 +93,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
 
     public void setDuration(int mDuration) {
         this.mDuration = mDuration;
-    }
-
-    public void setStrokeColor(int strokeColor) {
-        this.strokeColor = strokeColor;
     }
 
 
@@ -205,10 +193,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
         setMeasuredDimension(width, height);
     }
 
-    @Override
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
 
     @Override
     public void onViewAdded(View child) {
@@ -229,6 +213,7 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
         countPages = mViewPager.getAdapter().getCount();
         addViewTabs();
         invalidate();
+        setCurrentItem(0);
     }
 
     private void addViewTabs() {
@@ -309,15 +294,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
 
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        touched = true;
-        //getting the touched x and y position
-        x = event.getX();
-        y = event.getY();
-        invalidate();
-        return true;
-    }
 
     float convertdptopx(int dp) {
         Resources r = getResources();
@@ -400,7 +376,7 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
         return countPages;
     }
 
-
+    @SuppressLint({"InflateParams", "StaticFieldLeak"})
     static class TabStrip {
         static View view;
         private static ViewPagerIndicator indicator;

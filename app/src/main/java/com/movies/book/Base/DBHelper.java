@@ -4,11 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import com.movies.book.Base.annotations.ApplicationContext;
 import com.movies.book.Base.annotations.DatabaseInfo;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 
 @Singleton
@@ -25,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     @DatabaseInfo Integer version) {
         super(context, dbName, null, version);
         if (!dataBaseExist(context)) {
-            context.openOrCreateDatabase(DATABASE_NAME, context.MODE_PRIVATE, null);
+            context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
         }
         instance = this;
     }
@@ -50,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private static void createAllTables(SQLiteDatabase db) {
-
+/*
         db.beginTransaction();
         try {
 
@@ -58,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         } finally {
             db.endTransaction();
-        }
+        }*/
     }
 
     public static void reCreateAllTables() {

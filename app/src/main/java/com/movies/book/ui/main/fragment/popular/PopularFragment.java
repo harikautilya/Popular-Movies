@@ -1,13 +1,27 @@
 package com.movies.book.ui.main.fragment.popular;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 
 import com.movies.book.Base.Classes.BaseFragment;
 import com.movies.book.R;
+import com.movies.book.api.response.MoviesResponse;
 import com.movies.book.databinding.FragmentPopularBinding;
+import com.movies.book.ui.main.MovieAdapter;
 
-public class PopularFragment extends BaseFragment<FragmentPopularBinding,PopularViewModel,PopularNavigator> implements PopularNavigator {
+import java.util.List;
+
+import javax.inject.Inject;
+
+public class PopularFragment extends BaseFragment<FragmentPopularBinding, PopularViewModel, PopularNavigator> implements PopularNavigator {
+
+    @Inject
+    GridLayoutManager gridLayoutManager;
+
+
+    MovieAdapter adapter;
+
     @Override
     public int getBindingVariable() {
         return 0;
@@ -21,10 +35,28 @@ public class PopularFragment extends BaseFragment<FragmentPopularBinding,Popular
     @Override
     public void init(View view, Bundle savedInstances) {
 
+        getViewDataBinding().popularGridView.setLayoutManager(gridLayoutManager);
+        getViewModel().getData(getString(R.string.movies_apis));
     }
 
     @Override
     public int getColor() {
-        return 0;
+        return R.color.colorAccent;
+    }
+
+    @Override
+    public void populateList(List<MoviesResponse.MovieEntity> results) {
+        if (adapter == null) {
+
+            getViewDataBinding().popularGridView.setAdapter(adapter = new MovieAdapter(getContext(), results, getViewDataBinding().popularGridView, new MovieAdapter.OnLoadMoreListener() {
+                @Override
+                public void onLoadMore() {
+                    getViewModel().getData(getString(R.string.movies_apis));
+                }
+            }));
+
+        } else {
+            adapter.addData(results);
+        }
     }
 }

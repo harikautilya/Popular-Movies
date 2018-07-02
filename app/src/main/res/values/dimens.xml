@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tool_bar_padding">12dp</dimen>
+    <dimen name="child_margin">5dp</dimen>
+    <dimen name="parent_margin">10dp</dimen>
+    <dimen name="parent_padding">10dp</dimen>
+    <dimen name="card_elavation">10dp</dimen>
+    <dimen name="card_corners">0dp</dimen>
+</resources>

@@ -1,5 +1,7 @@
 package com.movies.book.Base.Dependices;
 
+import com.movies.book.ui.details.DetailActivity;
+import com.movies.book.ui.details.DetailModule;
 import com.movies.book.ui.main.MainActivity;
 import com.movies.book.ui.main.MainModule;
 import com.movies.book.ui.main.fragment.popular.PopularProvider;
@@ -18,5 +20,8 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = {MainModule.class, TopProvider.class, PopularProvider.class})
     abstract MainActivity provideMainActivity();
 
+
+    @ContributesAndroidInjector(modules = DetailModule.class)
+    abstract DetailActivity provideDetailActivity();
 
 }

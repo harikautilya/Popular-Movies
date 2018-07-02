@@ -10,7 +10,7 @@ public class MoviesResponse {
 
     @Expose
     @SerializedName("results")
-    private List<ResultsEntity> results;
+    private List<MovieEntity> results;
     @Expose
     @SerializedName("total_pages")
     private int totalPages;
@@ -21,11 +21,11 @@ public class MoviesResponse {
     @SerializedName("page")
     private int page;
 
-    public List<ResultsEntity> getResults() {
+    public List<MovieEntity> getResults() {
         return results;
     }
 
-    public void setResults(List<ResultsEntity> results) {
+    public void setResults(List<MovieEntity> results) {
         this.results = results;
     }
 
@@ -53,7 +53,7 @@ public class MoviesResponse {
         this.page = page;
     }
 
-    public static class ResultsEntity {
+    public static class MovieEntity {
         @Expose
         @SerializedName("release_date")
         private String releaseDate;

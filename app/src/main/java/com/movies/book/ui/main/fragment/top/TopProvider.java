@@ -7,5 +7,5 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class TopProvider {
 
     @ContributesAndroidInjector(modules = TopModule.class)
-    abstract TopFragment providePopularFragment();
+    abstract TopFragment provideTopFragment();
 }

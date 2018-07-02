@@ -136,7 +136,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
     /**
      * @return layout resource id
      */
-    public abstract
+    protected abstract
     @LayoutRes
     int getLayoutId();
 
