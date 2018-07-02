@@ -2,6 +2,7 @@ package com.movies.book.ui.details;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.movies.book.Base.Classes.BaseViewModel;
 import com.movies.book.Base.DataManager;
@@ -33,12 +34,12 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
         movieListService.getMovieDetails(movieID, api)
                 .enqueue(new Callback<MovieDetailResponse>() {
                     @Override
-                    public void onResponse(Call<MovieDetailResponse> call, Response<MovieDetailResponse> response) {
+                    public void onResponse(@NonNull Call<MovieDetailResponse> call,@NonNull  Response<MovieDetailResponse> response) {
                         getNavigator().updateData(response.body());
                     }
 
                     @Override
-                    public void onFailure(Call<MovieDetailResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<MovieDetailResponse> call,@NonNull  Throwable t) {
 
                     }
                 });

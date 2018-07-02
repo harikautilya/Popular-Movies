@@ -5,10 +5,6 @@ import android.support.v4.view.ViewPager;
 
 /**
  * Created by kautilya on 19/01/18.
- */
-
-
-/**
  * Used for the indication of the view pager
  */
 public interface PageIndicator extends ViewPager.OnPageChangeListener {
@@ -17,15 +13,15 @@ public interface PageIndicator extends ViewPager.OnPageChangeListener {
     /**
      * Used to bind the viewpager
      *
-     * @param pager
+     * @param pager view pager
      */
     void setUpViewPager(ViewPager pager);
 
     /**
      * Setup the initial postion of the viewPager
      *
-     * @param pager
-     * @param initialPosition
+     * @param pager  view pager
+     * @param initialPosition current item
      */
     void setUpViewPager(ViewPager pager, int initialPosition);
 
@@ -35,7 +31,7 @@ public interface PageIndicator extends ViewPager.OnPageChangeListener {
      * <p>This <strong>must</strong> be used if you need to set the page before
      * the views are drawn on screen (e.g., default start page).</p>
      *
-     * @param position
+     * @param position current item
      * @throws IllegalStateException if {@link #setUpViewPager(ViewPager)} is not called first
      */
     void setCurrentItem(int position);
@@ -43,7 +39,7 @@ public interface PageIndicator extends ViewPager.OnPageChangeListener {
     /**
      * bind the listener
      *
-     * @param pageChangeListener
+     * @param pageChangeListener listener
      */
     void setupOnPageChangeListener(ViewPager.OnPageChangeListener pageChangeListener);
 

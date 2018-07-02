@@ -11,16 +11,16 @@ import android.view.View;
 public abstract class BaseRecycleViewAdapter<K extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<K> {
 
 
-    public class BaseViewHolder<K extends ViewDataBinding> extends RecyclerView.ViewHolder {
+    public class BaseViewHolder<L extends ViewDataBinding> extends RecyclerView.ViewHolder {
         protected final String LOG_TAG = this.getClass().getName();
-        K viewBinding;
+        L viewBinding;
 
         public BaseViewHolder(View itemView) {
             super(itemView);
             viewBinding = DataBindingUtil.bind(itemView);
         }
 
-        public K getViewBinding() {
+        public L getViewBinding() {
             return viewBinding;
         }
     }

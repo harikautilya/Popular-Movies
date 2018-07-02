@@ -2,6 +2,7 @@ package com.movies.book.ui.main.fragment.popular;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.movies.book.Base.Classes.BaseViewModel;
 import com.movies.book.Base.DataManager;
@@ -36,13 +37,13 @@ public class PopularViewModel extends BaseViewModel<PopularNavigator> {
         movieListService.getPopulatMovies(apiKey, page)
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
-                    public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                    public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
                         getNavigator().populateList(response.body().getResults());
                         page++;
                     }
 
                     @Override
-                    public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<MoviesResponse> call,@NonNull  Throwable t) {
 
                     }
                 });

@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.movies.book.Base.DataManager;
 import com.movies.book.utils.Utils;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
@@ -104,7 +106,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
