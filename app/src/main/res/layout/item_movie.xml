@@ -2,95 +2,103 @@
 <layout>
 
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/parent_margin"
-        app:cardCornerRadius="@dimen/card_corners"
-        app:cardElevation="@dimen/card_elavation">
+        android:gravity="center">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/parent_padding">
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/parent_margin"
 
-            <ImageView
-                android:id="@+id/movie_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="@dimen/child_margin"
-                android:contentDescription="@string/image_of_the_movie"
-                android:src="@drawable/sample8" />
-
-            <TextView
-                android:id="@+id/movie_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/child_margin"
-                tools:text="Movie Name" />
+            app:cardCornerRadius="@dimen/card_corners"
+            app:cardElevation="@dimen/card_elavation">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/child_margin"
                 android:gravity="center"
-                android:orientation="horizontal">
-
+                android:orientation="vertical"
+                android:padding="@dimen/parent_padding">
 
                 <ImageView
-                    android:id="@+id/movie_adult"
-                    android:layout_width="0dp"
+                    android:id="@+id/movie_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="@dimen/child_margin"
+                    android:contentDescription="@string/image_of_the_movie"
+                    android:src="@drawable/sample8" />
+
+                <TextView
+                    android:id="@+id/movie_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/child_margin"
-                    android:layout_weight="0.1"
-                    android:contentDescription="@string/adult_rated_or_not" />
+                    tools:text="Movie Name" />
 
 
-                <me.zhanghai.android.materialratingbar.MaterialRatingBar
-                    android:id="@+id/image_rating"
-                    style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:rating="3"
-                    android:stepSize="1"
-                    app:mrb_progressTint="@android:color/black" />
-
-
-                <FrameLayout
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/child_margin"
-                    android:layout_weight="0.1">
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
 
                     <ImageView
-                        android:id="@+id/movie_language"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="@string/language_of_the_movie" />
-                </FrameLayout>
+                        android:id="@+id/movie_adult"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/child_margin"
+                        android:layout_weight="0.1"
+                        android:contentDescription="@string/adult_rated_or_not" />
 
+
+                    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                        android:id="@+id/image_rating"
+                        style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="3"
+                        android:stepSize="1"
+                        app:mrb_progressTint="@android:color/black" />
+
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/child_margin"
+                        android:layout_weight="0.1">
+
+                        <ImageView
+                            android:id="@+id/movie_language"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@string/language_of_the_movie" />
+                    </FrameLayout>
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/image_release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/child_margin"
+                    tools:text="Release Date : Sample date" />
 
             </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/image_release_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/child_margin"
-                tools:text="Release Date : Sample date" />
-
-        </LinearLayout>
-
-
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 </layout>
