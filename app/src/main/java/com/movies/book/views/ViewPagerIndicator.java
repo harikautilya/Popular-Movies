@@ -189,8 +189,14 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
             //Be whatever you want
             height = desiredHeight;
         }
-        mWidth = width / countPages;
-        setMeasuredDimension(width, height);
+        if (countPages > 0) {
+            mWidth = width / countPages;
+            setMeasuredDimension(width, height);
+        } else {
+            setMeasuredDimension(0, 0);
+        }
+
+
     }
 
 
