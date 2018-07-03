@@ -33,6 +33,10 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
         getViewDataBinding().movieDetail.setText(body.getOverview());
         getViewDataBinding().movieName.setText(body.getTitle());
 
+        getViewDataBinding().releaseData.setText(getString(R.string.release_date) + body.getRelease_date());
+        getViewDataBinding().voteAverage.setText(getString(R.string.vote_average) + body.getVote_average());
+
+
         Picasso.with(this)
                 .load("http://image.tmdb.org/t/p/original" + body.getBackdrop_path())
                 .into(getViewDataBinding().backdrop);
