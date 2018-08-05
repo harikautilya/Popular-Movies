@@ -17,9 +17,15 @@ public interface MovieListService {
 
 
     @GET("movie/popular")
-    Call<MoviesResponse> getPopulatMovies(@Query(Constants.QUERY_API_KEY) String key, @Query("page") long page);
+    Call<MoviesResponse> getPopularMovies(@Query(Constants.QUERY_API_KEY) String key, @Query("page") long page);
 
     @GET("movie/{id}")
     Call<MovieDetailResponse> getMovieDetails(@Path("id") long id, @Query(Constants.QUERY_API_KEY) String api);
+
+    @GET("movie/{id}/reviews")
+    Call<MovieDetailResponse> getMovieReviews(@Path("id") long id, @Query(Constants.QUERY_API_KEY) String api);
+
+    @GET("movie/{id}/videos")
+    Call<MovieDetailResponse> getMovieVideos(@Path("id") long id, @Query(Constants.QUERY_API_KEY) String api);
 
 }

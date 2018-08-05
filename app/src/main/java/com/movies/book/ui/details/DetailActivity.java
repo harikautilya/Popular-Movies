@@ -1,16 +1,21 @@
 package com.movies.book.ui.details;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.view.View;
 
 import com.movies.book.BR;
 import com.movies.book.Base.Classes.BaseActivity;
 import com.movies.book.R;
 import com.movies.book.api.response.MovieDetailResponse;
 import com.movies.book.databinding.ActivityDetailBinding;
-import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailViewModel, DetailNavigator> implements DetailNavigator {
+
+    BottomSheetBehavior sheetBehavior;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_detail;
@@ -26,20 +31,37 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
 
         getViewModel().getData(getString(R.string.movies_apis), getIntent().getIntExtra("movie_id", -1));
 
+
+        sheetBehavior = BottomSheetBehavior.from(getViewDataBinding().dataSheet.getRoot());
+
+
+        sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
     }
 
     @Override
     public void updateData(MovieDetailResponse body) {
-        getViewDataBinding().movieDetail.setText(body.getOverview());
-        getViewDataBinding().movieName.setText(body.getTitle());
-
-        getViewDataBinding().releaseData.setText(getString(R.string.release_date) + body.getRelease_date());
-        getViewDataBinding().voteAverage.setText(getString(R.string.vote_average) + body.getVote_average());
-
-
-        Picasso.with(this)
-                .load("http://image.tmdb.org/t/p/original" + body.getBackdrop_path())
-                .into(getViewDataBinding().backdrop);
 
 
     }

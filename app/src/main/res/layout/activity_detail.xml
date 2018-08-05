@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,54 +9,55 @@
             type="com.movies.book.ui.details.DetailViewModel" />
     </data>
 
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <include layout="@layout/toolbar" />
+        </android.support.design.widget.AppBarLayout>
+
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
 
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ImageView
-                android:id="@+id/backdrop"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/child_margin"
-                android:contentDescription="@string/image_of_the_movie_backdrop" />
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="20dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/sample8" />
 
 
-            <TextView
-                android:id="@+id/movie_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/child_margin" />
+                </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/vote_average"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/vote_average" />
 
-            <TextView
-                android:id="@+id/release_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/release_date" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/child_margin"
-                android:text="@string/movie_description" />
+        </FrameLayout>
 
-            <TextView
-                android:id="@+id/movie_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/child_margin" />
-        </LinearLayout>
-    </ScrollView>
+        <include
+            android:id="@+id/data_sheet"
+            layout="@layout/movie_detail"
+            bind:detail="@{detail_view.movieDetailResponse}" />
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

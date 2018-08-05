@@ -23,6 +23,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel, MainNavigator> implements MainNavigator, HasSupportFragmentInjector {
 
 
+    @Inject
     GenreAdapter genreAdapter;
 
     @Inject
@@ -41,12 +42,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     @Override
     public void init(@Nullable Bundle savedInstanceState) {
 
-        getViewDataBinding().mainViewpager.setAdapter(genreAdapter = new GenreAdapter(this.getSupportFragmentManager(),
-                Arrays.asList(
-                        ((BaseFragment) TopFragment.instantiate(this, TopFragment.class.getName())),
-                        ((BaseFragment) PopularFragment.instantiate(this, PopularFragment.class.getName()))
-                )
-                , Arrays.asList("Popular", "Top Rated")));
+        getViewDataBinding().mainViewpager.setAdapter(genreAdapter );
         getViewDataBinding().mainTabLayout.setUpViewPager(getViewDataBinding().mainViewpager);
 
     }

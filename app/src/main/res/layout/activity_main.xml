@@ -31,7 +31,6 @@
                 android:id="@+id/mainTabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
                 android:elevation="6dp"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -40,7 +39,8 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/mainViewpager"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent" />
+                android:layout_height="fill_parent"
+                android:paddingTop="10dp" />
 
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>

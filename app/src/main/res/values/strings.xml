@@ -9,4 +9,5 @@
     <string name="vote_average">Vote average :</string>
     <string name="release_date">Release Date :</string>
     <string name="movie_description">Movie Description</string>
+    <string name="login_title">BnC</string>
 </resources>

@@ -11,25 +11,22 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.TransitionDrawable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.movies.book.R;
-import com.movies.book.adapter.PageFragmentAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -38,7 +35,6 @@ import java.util.List;
 
 public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
     private static final String TAG = ViewPagerIndicator.class.getName();
-    private float expansionHeight;
     private ViewPager mViewPager;
     private int mCurrentPage;
     private float mPageOffset;
@@ -54,9 +50,7 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
     private final Rect mTmpChildRect = new Rect();
     private ArrayList<View> views;
     private int mDuration;
-    private float initialHeight, targetHeight;
-    private int tabCount;
-    private int selectedColor;
+
 
     public ViewPagerIndicator(Context context) {
         this(context, null);
@@ -79,10 +73,8 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
         mWidth = tabVIew.getMeasuredWidth();
         mHeight = tabVIew.getMeasuredHeight();
         mIndicatorPadding = 0;
-        expansionHeight = convertdptopx(10);
-        initialHeight = mHeight;
         mDuration = 500;
-        targetHeight = mHeight + (2 * expansionHeight);
+
         setGravity(VERTICAL);
 
     }
@@ -134,8 +126,8 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
                 mTmpChildRect.left = leftPos + lp.leftMargin;
                 mTmpChildRect.right = (int) (leftPos + mWidth + lp.rightMargin);
                 if (mCurrentPage == i) {
-                    mTmpChildRect.top = (int) (Math.round(parentTop + lp.topMargin) - expansionHeight);
-                    mTmpChildRect.bottom = Math.round(parentBottom - lp.bottomMargin + expansionHeight);
+                    mTmpChildRect.top = (int) (Math.round(parentTop + lp.topMargin));
+                    mTmpChildRect.bottom = Math.round(parentBottom - lp.bottomMargin);
                 } else {
                     mTmpChildRect.top = Math.round(parentTop + lp.topMargin);
                     mTmpChildRect.bottom = Math.round(parentBottom - lp.bottomMargin);
@@ -166,7 +158,7 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
         int desiredWidth = Math.round((countPages) * (mWidth + getPaddingRight() + getPaddingLeft()) + (mIndicatorPadding * countPages));
-        int desiredHeight = Math.round(mHeight + (2 * expansionHeight)) + getPaddingTop() + getPaddingBottom();
+        int desiredHeight = Math.round(mHeight) + getPaddingTop() + getPaddingBottom();
 
 
         if (widthMode == MeasureSpec.EXACTLY) {
@@ -214,7 +206,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
         mViewPager = pager;
-        countPages = mViewPager.getAdapter().getCount();
         mViewPager.addOnPageChangeListener(this);
         countPages = mViewPager.getAdapter().getCount();
         addViewTabs();
@@ -224,15 +215,10 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
 
     private void addViewTabs() {
         views = new ArrayList<>();
-        List<Integer> colors = ((PageFragmentAdapter) mViewPager.getAdapter()).getColors();
         for (int i = 0; i < countPages; i++) {
-            View view = TabStrip.getView(context, i, this, mViewPager.getAdapter().getPageTitle(i).toString(), getResources().getColor(colors.get(i)));
+            View view = TabStrip.getView(context, i, this, mViewPager.getAdapter().getPageTitle(i).toString());
             views.add(view);
             addView(view);
-            Animation animation1 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
-            animation1.setDuration(mDuration);
-            animation1.setFillAfter(true);
-            view.startAnimation(animation1);
         }
         requestLayout();
         invalidate();
@@ -275,7 +261,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        Log.d(TAG, "onPageScrolled: positionOffset: " + positionOffset + " positionOffSetPixels: " + positionOffsetPixels);
         mPageOffset = positionOffset;
         invalidate();
         if (mPageListener != null)
@@ -306,76 +291,17 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 
-
+    @SuppressLint("ObjectAnimatorBinding")
     public void expand(final View v) {
-        ObjectAnimator colorFade = ObjectAnimator.ofObject(v.findViewById(R.id.item_details), "backgroundColor" /*view attribute name*/, new ArgbEvaluator(), getContext().getResources().getColor(R.color.colorPrimary) /*from color*/, Color.WHITE /*to color*/);
-        colorFade.setDuration(mDuration);
-        colorFade.start();
-
-        v.findViewById(R.id.colorBorder).setVisibility(VISIBLE);
-        ObjectAnimator colorFade2 = ObjectAnimator.ofObject(v.findViewById(R.id.tab_head_line), "textColor", new ArgbEvaluator(), Color.WHITE, getContext().getResources().getColor(R.color.colorPrimary));
-        colorFade2.setDuration(mDuration);
-        colorFade2.start();
-
-        Animation a = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                v.getLayoutParams().height = interpolatedTime == 1
-                        ? (int) targetHeight
-                        : (int) ((initialHeight) + ((targetHeight - initialHeight) * interpolatedTime));
-                v.requestLayout();
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        // 1dp/ms
-        a.setDuration(mDuration);
-        Animation animation1 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
-        animation1.setDuration(mDuration);
-        animation1.setFillAfter(true);
-        v.startAnimation(animation1);
-        v.startAnimation(a);
+        TransitionDrawable transition = (TransitionDrawable) v.getBackground();
+        transition.startTransition(mDuration);
     }
 
+    @SuppressLint("ObjectAnimatorBinding")
     public void collapse(final View v) {
-        ObjectAnimator colorFade = ObjectAnimator.ofObject(v.findViewById(R.id.item_details), "backgroundColor", new ArgbEvaluator(), Color.WHITE, getContext().getResources().getColor(R.color.colorPrimary));
-        colorFade.setDuration(mDuration);
-        colorFade.start();
-        ObjectAnimator colorFade2 = ObjectAnimator.ofObject(v.findViewById(R.id.tab_head_line), "textColor" /*view attribute name*/, new ArgbEvaluator(), getContext().getResources().getColor(R.color.colorPrimary) /*from color*/, Color.WHITE /*to color*/);
-        colorFade2.setDuration(mDuration);
-        colorFade2.start();
-        v.findViewById(R.id.colorBorder).setVisibility(GONE);
+        TransitionDrawable transition = (TransitionDrawable) v.getBackground();
+        transition.reverseTransition(mDuration);
 
-        Animation a = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if (interpolatedTime == 1) {
-                    v.getLayoutParams().height = (int) initialHeight;
-                    v.setBackground(getResources().getDrawable(R.drawable.background_white_border));
-                } else {
-                    v.getLayoutParams().height = (int) (targetHeight - ((targetHeight - initialHeight) * interpolatedTime));
-                    v.requestLayout();
-                }
-
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-        a.setDuration(mDuration);
-
-
-        Animation animation1 = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
-        animation1.setDuration(mDuration);
-        animation1.setFillAfter(true);
-        v.startAnimation(a);
-        v.startAnimation(animation1);
     }
 
     public int getTabCount() {
@@ -388,16 +314,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
         private static ViewPagerIndicator indicator;
 
 
-        private static String text;
-
-
-        static View getView(Context context, int i, ViewPagerIndicator viewPagerIndicator) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_tab, null, false);
-            indicator = viewPagerIndicator;
-            addPosition(i);
-            return view;
-        }
-
         static View getView(Context context, int i, ViewPagerIndicator viewPagerIndicator, String text) {
             view = LayoutInflater.from(context).inflate(R.layout.item_tab, null, false);
             ((TextView) view.findViewById(R.id.tab_head_line)).setText(text);
@@ -406,14 +322,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
             return view;
         }
 
-        static View getView(Context context, int i, ViewPagerIndicator viewPagerIndicator, String text, int color) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_tab, null, false);
-            ((TextView) view.findViewById(R.id.tab_head_line)).setText(text);
-            view.findViewById(R.id.colorBorder).setBackgroundColor(color);
-            indicator = viewPagerIndicator;
-            addPosition(i);
-            return view;
-        }
 
         private static void addPosition(final int position) {
             view.setOnClickListener(new OnClickListener() {
@@ -426,9 +334,6 @@ public class ViewPagerIndicator extends LinearLayout implements PageIndicator {
     }
 
     void setViewData(Rect rect, View view) {
-
-        view.setLayoutParams(new LayoutParams(rect.right - rect.left, rect.bottom - rect.top - (int) (2 * expansionHeight)));
-
-
+        view.setLayoutParams(new LayoutParams(rect.right - rect.left, rect.bottom - rect.top));
     }
 }

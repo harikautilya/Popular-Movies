@@ -1,6 +1,7 @@
 package com.movies.book.ui.details;
 
 import android.content.Context;
+import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -12,14 +13,19 @@ import com.movies.book.api.request.MovieListService;
 import com.movies.book.api.response.MovieDetailResponse;
 import com.movies.book.storage.BaseDataPackage;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DetailViewModel extends BaseViewModel<DetailNavigator> {
 
+    public ObservableField<MovieDetailResponse> movieDetailResponse;
+    public Observable<String> dasdas;
+
     public DetailViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, BaseDataPackage baseDataPackage) {
         super(dataManager, schedulerProvider, baseDataPackage);
+        movieDetailResponse = new ObservableField<>();
     }
 
     @Override
@@ -34,12 +40,12 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
         movieListService.getMovieDetails(movieID, api)
                 .enqueue(new Callback<MovieDetailResponse>() {
                     @Override
-                    public void onResponse(@NonNull Call<MovieDetailResponse> call,@NonNull  Response<MovieDetailResponse> response) {
-                        getNavigator().updateData(response.body());
+                    public void onResponse(@NonNull Call<MovieDetailResponse> call, @NonNull Response<MovieDetailResponse> response) {
+                        movieDetailResponse.set(response.body());
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<MovieDetailResponse> call,@NonNull  Throwable t) {
+                    public void onFailure(@NonNull Call<MovieDetailResponse> call, @NonNull Throwable t) {
 
                     }
                 });

@@ -59,6 +59,7 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation deps.junit
     androidTestImplementation deps.android.support.test.runner
     androidTestImplementation deps.android.support.test.espressoCore
@@ -67,8 +68,6 @@ dependencies {
 
     implementation deps.rx.android
     implementation deps.rx.java
-
-
 
     // dependency injection
     implementation deps.dagger.source

@@ -34,7 +34,7 @@ public class PopularViewModel extends BaseViewModel<PopularNavigator> {
         MovieListService movieListService = RequestFactory.createRetroFitService(MovieListService.class);
 
 
-        movieListService.getPopulatMovies(apiKey, page)
+        movieListService.getPopularMovies(apiKey, page)
                 .enqueue(new Callback<MoviesResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
