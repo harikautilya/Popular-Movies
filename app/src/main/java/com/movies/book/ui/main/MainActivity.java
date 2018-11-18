@@ -56,13 +56,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             public void onLoadMore() {
                 switch (selectDataType) {
                     case FAV:
-                        getViewModel().getFavMovies();
+
                         break;
                     case TOP:
-                        getViewModel().getTopMovies(getString(R.string.movies_apis), MainActivity.this);
+                        getViewDataBinding().moviesList.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                getViewModel().getTopMovies(getString(R.string.movies_apis), MainActivity.this);
+                            }
+                        });
                         break;
                     case POPULAR:
-                        getViewModel().getPopularMovies(getString(R.string.movies_apis), MainActivity.this);
+                        getViewDataBinding().moviesList.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                getViewModel().getPopularMovies(getString(R.string.movies_apis), MainActivity.this);
+                            }
+                        });
+
                         break;
                     default:
                         break;

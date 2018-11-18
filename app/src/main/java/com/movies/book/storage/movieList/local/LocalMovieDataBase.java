@@ -53,9 +53,14 @@ public class LocalMovieDataBase implements MovieData {
         Cursor movieCursor = dbHelper.getMovieList();
         movieCursor.moveToFirst();
         List<MoviesResponse.MovieEntity> data = new ArrayList<>();
-        while (movieCursor.moveToNext()) {
-            data.add(parseCursor(movieCursor));
+        if (movieCursor.getCount() == 0) {
+            movieCursor.close();
+            return data;
         }
+        do {
+            data.add(parseCursor(movieCursor));
+        } while (movieCursor.moveToNext());
+        movieCursor.close();
         return data;
     }
 
@@ -122,9 +127,15 @@ public class LocalMovieDataBase implements MovieData {
     @Override
     public boolean checkMovie(int id) {
         Cursor cursor;
-        boolean result = (cursor = dbHelper.getMovie(id)).moveToFirst();
-        cursor.close();
-        return result;
+        (cursor = dbHelper.getMovie(id)).moveToFirst();
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            return false;
+        } else {
+            cursor.close();
+            return true;
+        }
+
     }
 
 

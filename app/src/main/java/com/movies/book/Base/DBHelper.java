@@ -102,6 +102,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = DBHelper.get().getWritableDatabase();
         deleteAllTables(db);
         createAllTables(db);
+
     }
 
 
