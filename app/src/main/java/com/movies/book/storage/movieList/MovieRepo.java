@@ -11,9 +11,19 @@ public class MovieRepo {
     }
 
 
-    void createTable() {
-        remoteData.getMovieList();
+    public MovieData getCloudData() {
+        return cloudData;
     }
 
+    public void setCloudData(MovieData cloudData) {
+        this.cloudData = cloudData;
+    }
 
+    public MovieData getRemoteData() {
+        return remoteData;
+    }
+
+    public void setRemoteData(MovieData remoteData) {
+        this.remoteData = remoteData;
+    }
 }

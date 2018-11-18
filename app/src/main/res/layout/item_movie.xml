@@ -35,11 +35,18 @@
                     android:contentDescription="@string/image_of_the_movie"
                     android:src="@drawable/sample8" />
 
-                <TextView
-                    android:id="@+id/movie_name"
+                <ImageView
+                    android:id="@+id/fav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/child_margin" />
+
+                <TextView
+                    android:id="@+id/movie_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="@dimen/child_margin"
+                    android:textAlignment="center"
                     tools:text="Movie Name" />
 
 

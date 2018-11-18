@@ -56,7 +56,7 @@ public class TopFragment extends BaseFragment<FragmentTopBinding, TopVIewModel, 
                     getViewModel().getData(getString(R.string.movies_apis), getContext());
 
                 }
-            }));
+            }, null));
 
         } else {
             adapter.addData(results);

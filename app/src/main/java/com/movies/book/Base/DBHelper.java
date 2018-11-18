@@ -3,6 +3,7 @@ package com.movies.book.Base;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -38,17 +39,16 @@ public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper instance = null;
 
     private static final String LOG_TAG = DBHelper.class.getName();
-    private static final String DATABASE_NAME = "WardApp";
-    private static final int DATABASE_VERSION = 1;
+
 
     @Inject
     public DBHelper(@ApplicationContext Context context,
                     @DatabaseInfo String dbName,
                     @DatabaseInfo Integer version) {
         super(context, dbName, null, version);
-        if (!dataBaseExist(context)) {
-            context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-        }
+
+        context.openOrCreateDatabase(dbName, Context.MODE_PRIVATE, null);
+
         instance = this;
     }
 
@@ -68,13 +68,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private static void deleteAllTables(SQLiteDatabase db) {
-
+        db.delete(TABLE_NAME, null, null);
     }
 
 
     private static void createAllTables(SQLiteDatabase db) {
 
-        db.beginTransaction();
+
         try {
             db.execSQL(TableUtils.createTable(TABLE_NAME,
                     Arrays.asList(
@@ -91,11 +91,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     ), Arrays.asList(MOVIE_POPULARITY,
                             MOVIE_VOTE_AVERAGE,
                             MOVIE_VOTE_COUNT), MOVIE_ID));
-        } catch (Throwable e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            db.endTransaction();
         }
+
+
     }
 
     public static void reCreateAllTables() {
@@ -104,9 +104,6 @@ public class DBHelper extends SQLiteOpenHelper {
         createAllTables(db);
     }
 
-    public boolean dataBaseExist(Context context) {
-        return context.getDatabasePath(DATABASE_NAME).exists();
-    }
 
     public Cursor getMovieList() {
         return getReadableDatabase().query(TABLE_NAME, null, null, null, null, null, null);
@@ -119,5 +116,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int deleteMovie(long id) {
         return getWritableDatabase().delete(TABLE_NAME, MOVIE_ID + "=?", Collections.singletonList(id + "").toArray(new String[1]));
+    }
+
+    public Cursor getMovie(int id) {
+        return getReadableDatabase().query(TABLE_NAME, null, MOVIE_ID + "=?", Collections.singleton(id + "").toArray(new String[1]), null, null, null);
+
     }
 }

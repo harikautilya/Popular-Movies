@@ -23,4 +23,24 @@ public class CloudMovieDataBase implements MovieData {
     public List<MoviesResponse.MovieEntity> getMovieList() {
         throw new UnsupportedOperationException("Cloud data for this repo is not available");
     }
+
+    @Override
+    public long saveMovie(MoviesResponse.MovieEntity movieEntity) {
+        throw new UnsupportedOperationException("Cloud data for this repo is not available");
+    }
+
+    @Override
+    public int deleteMovie(long id) {
+        throw new UnsupportedOperationException("Cloud data for this repo is not available");
+    }
+
+    @Override
+    public void toggle(MoviesResponse.MovieEntity movieEntity) {
+        throw new UnsupportedOperationException("Cloud data for this repo is not available");
+    }
+
+    @Override
+    public boolean checkMovie(int id) {
+        throw new UnsupportedOperationException("Cloud data for this repo is not available");
+    }
 }

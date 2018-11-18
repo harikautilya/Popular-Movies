@@ -54,30 +54,33 @@ public class LocalMovieDataBase implements MovieData {
         movieCursor.moveToFirst();
         List<MoviesResponse.MovieEntity> data = new ArrayList<>();
         while (movieCursor.moveToNext()) {
-
-            MoviesResponse.MovieEntity movieEntity = new MoviesResponse.MovieEntity();
-
-            movieEntity.setReleaseDate((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_RELEASE_DATE))));
-            movieEntity.setOverview((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_OVER_VIEW))));
-            movieEntity.setAdult(Boolean.parseBoolean(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ADULT))));
-            movieEntity.setBackdropPath((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_BACKDROP))));
-            List<Integer> genersId = new ArrayList<>();
-            for (String text : TextUtils.split(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_GENRE_IDS)), ",")) {
-                genersId.add(Integer.parseInt(text));
-            }
-            movieEntity.setGenreIds(genersId);
-            movieEntity.setOriginalTitle((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ORIGIN_TITLE))));
-            movieEntity.setOriginalLanguage((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ORIGINAL_LANGUAGE))));
-            movieEntity.setPosterPath((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_POSTER_PATH))));
-            movieEntity.setPopularity((movieCursor.getDouble(movieCursor.getColumnIndex(MOVIE_POPULARITY))));
-            movieEntity.setTitle((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_TITLE))));
-            movieEntity.setVoteAverage((movieCursor.getDouble(movieCursor.getColumnIndex(MOVIE_VOTE_AVERAGE))));
-            movieEntity.setVideo(Boolean.parseBoolean(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_VIDEO))));
-            movieEntity.setId((movieCursor.getInt(movieCursor.getColumnIndex(MOVIE_ID))));
-            movieEntity.setVoteCount((movieCursor.getInt(movieCursor.getColumnIndex(MOVIE_VOTE_COUNT))));
-            data.add(movieEntity);
+            data.add(parseCursor(movieCursor));
         }
         return data;
+    }
+
+    MoviesResponse.MovieEntity parseCursor(Cursor movieCursor) {
+        MoviesResponse.MovieEntity movieEntity = new MoviesResponse.MovieEntity();
+
+        movieEntity.setReleaseDate((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_RELEASE_DATE))));
+        movieEntity.setOverview((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_OVER_VIEW))));
+        movieEntity.setAdult(Boolean.parseBoolean(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ADULT))));
+        movieEntity.setBackdropPath((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_BACKDROP))));
+        List<Integer> genersId = new ArrayList<>();
+        for (String text : TextUtils.split(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_GENRE_IDS)), ",")) {
+            genersId.add(Integer.parseInt(text));
+        }
+        movieEntity.setGenreIds(genersId);
+        movieEntity.setOriginalTitle((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ORIGIN_TITLE))));
+        movieEntity.setOriginalLanguage((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ORIGINAL_LANGUAGE))));
+        movieEntity.setPosterPath((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_POSTER_PATH))));
+        movieEntity.setPopularity((movieCursor.getDouble(movieCursor.getColumnIndex(MOVIE_POPULARITY))));
+        movieEntity.setTitle((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_TITLE))));
+        movieEntity.setVoteAverage((movieCursor.getDouble(movieCursor.getColumnIndex(MOVIE_VOTE_AVERAGE))));
+        movieEntity.setVideo(Boolean.parseBoolean(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_VIDEO))));
+        movieEntity.setId((movieCursor.getInt(movieCursor.getColumnIndex(MOVIE_ID))));
+        movieEntity.setVoteCount((movieCursor.getInt(movieCursor.getColumnIndex(MOVIE_VOTE_COUNT))));
+        return movieEntity;
     }
 
     @Override
@@ -105,6 +108,23 @@ public class LocalMovieDataBase implements MovieData {
     @Override
     public int deleteMovie(long id) {
         return dbHelper.deleteMovie(id);
+    }
+
+    @Override
+    public void toggle(MoviesResponse.MovieEntity movieEntity) {
+        if (!checkMovie(movieEntity.getId())) {
+            saveMovie(movieEntity);
+        } else {
+            deleteMovie(movieEntity.getId());
+        }
+    }
+
+    @Override
+    public boolean checkMovie(int id) {
+        Cursor cursor;
+        boolean result = (cursor = dbHelper.getMovie(id)).moveToFirst();
+        cursor.close();
+        return result;
     }
 
 

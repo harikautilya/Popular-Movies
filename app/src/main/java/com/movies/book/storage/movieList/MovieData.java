@@ -13,4 +13,7 @@ public interface MovieData {
     int deleteMovie(long id);
 
 
+    void toggle(MoviesResponse.MovieEntity movieEntity);
+
+    boolean checkMovie(int id);
 }

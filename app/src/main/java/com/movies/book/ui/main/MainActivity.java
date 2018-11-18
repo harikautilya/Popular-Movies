@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
                 }
             }
-        }));
+        }, getViewModel().getBaseDataPackage().provideMovieRepo()));
 
         getViewDataBinding().fav.setOnClickListener(new View.OnClickListener() {
             @Override

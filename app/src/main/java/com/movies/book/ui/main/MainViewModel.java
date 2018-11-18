@@ -58,6 +58,8 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
     public void getFavMovies() {
         pageTop = 1;
         pagePop = 1;
+        getNavigator().populateList(getBaseDataPackage().provideMovieRepo().getRemoteData().getMovieList());
+
 
     }
 }

@@ -53,7 +53,7 @@ public class PopularFragment extends BaseFragment<FragmentPopularBinding, Popula
                 public void onLoadMore() {
                     getViewModel().getData(getString(R.string.movies_apis), getContext());
                 }
-            }));
+            }, null));
 
         } else {
             adapter.addData(results);

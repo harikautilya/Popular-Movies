@@ -13,6 +13,7 @@ import com.movies.book.Base.Classes.BaseRecycleViewAdapter;
 import com.movies.book.R;
 import com.movies.book.api.response.MoviesResponse;
 import com.movies.book.databinding.ItemMovieBinding;
+import com.movies.book.storage.movieList.MovieRepo;
 import com.movies.book.ui.details.DetailActivity;
 import com.squareup.picasso.Picasso;
 
@@ -20,9 +21,11 @@ import java.util.List;
 
 public class MovieAdapter extends BaseRecycleViewAdapter<MoviesResponse.MovieEntity, MovieAdapter.MovieHolder> {
 
+    MovieRepo repo;
 
-    public MovieAdapter(List<MoviesResponse.MovieEntity> data, Context context, boolean filterable, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
+    public MovieAdapter(List<MoviesResponse.MovieEntity> data, Context context, boolean filterable, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener, MovieRepo repo) {
         super(data, context, filterable, onLoadMoreListener, recyclerView);
+        this.repo = repo;
     }
 
 
@@ -40,7 +43,11 @@ public class MovieAdapter extends BaseRecycleViewAdapter<MoviesResponse.MovieEnt
     public void addData(List<MoviesResponse.MovieEntity> moreData) {
         int start = data.size();
         data.addAll(moreData);
-        notifyItemRangeInserted(start, data.size());
+        if (start == 0) {
+            notifyDataSetChanged();
+        } else {
+            notifyItemRangeInserted(start, data.size());
+        }
         setLoading(false);
     }
 
@@ -57,9 +64,21 @@ public class MovieAdapter extends BaseRecycleViewAdapter<MoviesResponse.MovieEnt
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(MoviesResponse.MovieEntity movieEntity) {
+        public void bind(final MoviesResponse.MovieEntity movieEntity) {
 
+            if (repo.getRemoteData().checkMovie(movieEntity.getId())) {
+                getViewDataBinding().fav.setBackground(context.getResources().getDrawable(R.drawable.ic_favorite_black));
+            } else {
+                getViewDataBinding().fav.setBackground(context.getResources().getDrawable(R.drawable.ic_favorite_black_empty));
+            }
 
+            getViewDataBinding().fav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    repo.getRemoteData().toggle(movieEntity);
+                    notifyItemChanged(getAdapterPosition());
+                }
+            });
             if (movieEntity.getAdult()) {
                 getViewDataBinding().movieAdult.setBackground(context.getDrawable(R.drawable.ic_adult_rated));
             } else {
