@@ -1,5 +1,6 @@
 package com.movies.book.storage.movieList.local;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
@@ -12,6 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_ADULT;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_BACKDROP;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_GENRE_IDS;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_ID;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_ORIGINAL_LANGUAGE;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_ORIGIN_TITLE;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_OVER_VIEW;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_POPULARITY;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_POSTER_PATH;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_RELEASE_DATE;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_TITLE;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_VIDEO;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_VOTE_AVERAGE;
+import static com.movies.book.storage.movieList.local.LocalMovieDataBase.MovieTable.MOVIE_VOTE_COUNT;
 
 public class LocalMovieDataBase implements MovieData {
 
@@ -43,27 +57,54 @@ public class LocalMovieDataBase implements MovieData {
 
             MoviesResponse.MovieEntity movieEntity = new MoviesResponse.MovieEntity();
 
-            movieEntity.setReleaseDate((movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_RELEASE_DATE))));
-            movieEntity.setOverview((movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_OVER_VIEW))));
+            movieEntity.setReleaseDate((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_RELEASE_DATE))));
+            movieEntity.setOverview((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_OVER_VIEW))));
             movieEntity.setAdult(Boolean.parseBoolean(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ADULT))));
-            movieEntity.setBackdropPath((movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_BACKDROP))));
+            movieEntity.setBackdropPath((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_BACKDROP))));
             List<Integer> genersId = new ArrayList<>();
-            for (String text : TextUtils.split(movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_GENRE_IDS)), ",")) {
+            for (String text : TextUtils.split(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_GENRE_IDS)), ",")) {
                 genersId.add(Integer.parseInt(text));
             }
             movieEntity.setGenreIds(genersId);
-            movieEntity.setOriginalTitle((movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_ORIGIN_TITLE))));
-            movieEntity.setOriginalLanguage((movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_ORIGINAL_LANGUAGE))));
-            movieEntity.setPosterPath((movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_POSTER_PATH))));
-            movieEntity.setPopularity((movieCursor.getDouble(movieCursor.getColumnIndex(MovieTable.MOVIE_POPULARITY))));
-            movieEntity.setTitle((movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_TITLE))));
-            movieEntity.setVoteAverage((movieCursor.getDouble(movieCursor.getColumnIndex(MovieTable.MOVIE_VOTE_AVERAGE))));
-            movieEntity.setVideo(Boolean.parseBoolean(movieCursor.getString(movieCursor.getColumnIndex(MovieTable.MOVIE_VIDEO))));
-            movieEntity.setId((movieCursor.getInt(movieCursor.getColumnIndex(MovieTable.MOVIE_ID))));
-            movieEntity.setVoteCount((movieCursor.getInt(movieCursor.getColumnIndex(MovieTable.MOVIE_VOTE_COUNT))));
+            movieEntity.setOriginalTitle((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ORIGIN_TITLE))));
+            movieEntity.setOriginalLanguage((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_ORIGINAL_LANGUAGE))));
+            movieEntity.setPosterPath((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_POSTER_PATH))));
+            movieEntity.setPopularity((movieCursor.getDouble(movieCursor.getColumnIndex(MOVIE_POPULARITY))));
+            movieEntity.setTitle((movieCursor.getString(movieCursor.getColumnIndex(MOVIE_TITLE))));
+            movieEntity.setVoteAverage((movieCursor.getDouble(movieCursor.getColumnIndex(MOVIE_VOTE_AVERAGE))));
+            movieEntity.setVideo(Boolean.parseBoolean(movieCursor.getString(movieCursor.getColumnIndex(MOVIE_VIDEO))));
+            movieEntity.setId((movieCursor.getInt(movieCursor.getColumnIndex(MOVIE_ID))));
+            movieEntity.setVoteCount((movieCursor.getInt(movieCursor.getColumnIndex(MOVIE_VOTE_COUNT))));
             data.add(movieEntity);
         }
         return data;
+    }
+
+    @Override
+    public long saveMovie(MoviesResponse.MovieEntity movieEntity) {
+
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MOVIE_RELEASE_DATE, movieEntity.getReleaseDate());
+        contentValues.put(MOVIE_OVER_VIEW, movieEntity.getOverview());
+        contentValues.put(MOVIE_ADULT, movieEntity.getAdult() + "");
+        contentValues.put(MOVIE_BACKDROP, movieEntity.getBackdropPath());
+        contentValues.put(MOVIE_GENRE_IDS, TextUtils.join(",", movieEntity.getGenreIds()));
+        contentValues.put(MOVIE_ORIGIN_TITLE, movieEntity.getOriginalTitle());
+        contentValues.put(MOVIE_ORIGINAL_LANGUAGE, movieEntity.getOriginalLanguage());
+        contentValues.put(MOVIE_POSTER_PATH, movieEntity.getPosterPath());
+        contentValues.put(MOVIE_POPULARITY, movieEntity.getPopularity());
+        contentValues.put(MOVIE_TITLE, movieEntity.getTitle());
+        contentValues.put(MOVIE_VOTE_AVERAGE, movieEntity.getVoteAverage());
+        contentValues.put(MOVIE_VIDEO, movieEntity.getVideo());
+        contentValues.put(MOVIE_ID, movieEntity.getId());
+        contentValues.put(MOVIE_VOTE_COUNT, movieEntity.getVoteCount());
+        return dbHelper.saveMovie(contentValues);
+    }
+
+    @Override
+    public int deleteMovie(long id) {
+        return dbHelper.deleteMovie(id);
     }
 
 

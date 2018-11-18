@@ -1,5 +1,6 @@
 package com.movies.book.Base;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +11,7 @@ import com.movies.book.Base.annotations.DatabaseInfo;
 import com.movies.book.utils.TableUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -109,5 +111,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getMovieList() {
         return getReadableDatabase().query(TABLE_NAME, null, null, null, null, null, null);
 
+    }
+
+    public long saveMovie(ContentValues contentValues) {
+        return getWritableDatabase().insert(TABLE_NAME, null, contentValues);
+    }
+
+    public int deleteMovie(long id) {
+        return getWritableDatabase().delete(TABLE_NAME, MOVIE_ID + "=?", Collections.singletonList(id + "").toArray(new String[1]));
     }
 }

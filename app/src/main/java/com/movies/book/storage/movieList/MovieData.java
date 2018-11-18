@@ -8,5 +8,9 @@ public interface MovieData {
 
     List<MoviesResponse.MovieEntity> getMovieList();
 
+    long saveMovie(MoviesResponse.MovieEntity movieEntity);
+
+    int deleteMovie(long id);
+
 
 }
