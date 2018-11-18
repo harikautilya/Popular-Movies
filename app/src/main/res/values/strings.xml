@@ -10,4 +10,5 @@
     <string name="release_date">Release Date :</string>
     <string name="movie_description">Movie Description</string>
     <string name="login_title">BnC</string>
+    <string name="server_error">Issue fetching Data from server</string>
 </resources>

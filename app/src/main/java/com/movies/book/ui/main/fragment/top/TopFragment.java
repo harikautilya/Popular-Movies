@@ -36,7 +36,7 @@ public class TopFragment extends BaseFragment<FragmentTopBinding, TopVIewModel, 
     public void init(View view, Bundle savedInstances) {
 
         getViewDataBinding().topGridView.setLayoutManager(gridLayoutManager);
-        getViewModel().getData(getString(R.string.movies_apis));
+        getViewModel().getData(getString(R.string.movies_apis),getContext());
 
     }
 
@@ -49,11 +49,11 @@ public class TopFragment extends BaseFragment<FragmentTopBinding, TopVIewModel, 
     public void populateList(List<MoviesResponse.MovieEntity> results) {
         if (adapter == null) {
 
-            getViewDataBinding().topGridView.setAdapter(adapter = new MovieAdapter(getContext(), results, getViewDataBinding().topGridView, new MovieAdapter.OnLoadMoreListener() {
+            getViewDataBinding().topGridView.setAdapter(adapter = new MovieAdapter(results, getContext(), false, getViewDataBinding().topGridView, new MovieAdapter.OnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
 
-                    getViewModel().getData(getString(R.string.movies_apis));
+                    getViewModel().getData(getString(R.string.movies_apis), getContext());
 
                 }
             }));

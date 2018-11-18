@@ -2,6 +2,8 @@ package com.movies.book.api.request;
 
 
 import com.movies.book.api.response.MovieDetailResponse;
+import com.movies.book.api.response.MovieReviewResponse;
+import com.movies.book.api.response.MovieVideoResponse;
 import com.movies.book.api.response.MoviesResponse;
 import com.movies.book.utils.Constants;
 
@@ -23,9 +25,9 @@ public interface MovieListService {
     Call<MovieDetailResponse> getMovieDetails(@Path("id") long id, @Query(Constants.QUERY_API_KEY) String api);
 
     @GET("movie/{id}/reviews")
-    Call<MovieDetailResponse> getMovieReviews(@Path("id") long id, @Query(Constants.QUERY_API_KEY) String api);
+    Call<MovieReviewResponse> getMovieReviews(@Path("id") long id, @Query(Constants.QUERY_API_KEY) String api);
 
     @GET("movie/{id}/videos")
-    Call<MovieDetailResponse> getMovieVideos(@Path("id") long id, @Query(Constants.QUERY_API_KEY) String api);
+    Call<MovieVideoResponse> getMovieVideos(@Path("id") long id, @Query(Constants.QUERY_API_KEY) String api);
 
 }

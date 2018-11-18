@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,41 +18,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MovieAdapter extends BaseRecycleViewAdapter<MovieAdapter.MovieHolder> {
+public class MovieAdapter extends BaseRecycleViewAdapter<MoviesResponse.MovieEntity, MovieAdapter.MovieHolder> {
 
-    private final OnLoadMoreListener onLoadMoreListener;
-    private final Context context;
-    private final List<MoviesResponse.MovieEntity> data;
-    private boolean isLoading;
 
-    public MovieAdapter(Context context, List<MoviesResponse.MovieEntity> data, RecyclerView recyclerView, final OnLoadMoreListener onLoadMoreListener) {
-        this.context = context;
-        this.data = data;
-        this.onLoadMoreListener = onLoadMoreListener;
-        final GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView,
-                                             int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-
-                if (!isLoading) {
-                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-                        if (onLoadMoreListener != null)
-                            onLoadMoreListener.onLoadMore();
-                    }
-                }
-            }
-        });
+    public MovieAdapter(List<MoviesResponse.MovieEntity> data, Context context, boolean filterable, RecyclerView recyclerView, OnLoadMoreListener onLoadMoreListener) {
+        super(data, context, filterable, onLoadMoreListener, recyclerView);
     }
+
 
     @NonNull
     @Override
@@ -70,7 +41,7 @@ public class MovieAdapter extends BaseRecycleViewAdapter<MovieAdapter.MovieHolde
         int start = data.size();
         data.addAll(moreData);
         notifyItemRangeInserted(start, data.size());
-        isLoading = false;
+        setLoading(false);
     }
 
     @Override
@@ -78,11 +49,8 @@ public class MovieAdapter extends BaseRecycleViewAdapter<MovieAdapter.MovieHolde
         return data.size();
     }
 
-    public interface OnLoadMoreListener {
-        void onLoadMore();
-    }
 
-    class MovieHolder extends BaseRecycleViewAdapter<MovieAdapter.MovieHolder>.BaseViewHolder<ItemMovieBinding> {
+    class MovieHolder extends BaseRecycleViewAdapter<MoviesResponse.MovieEntity, MovieAdapter.MovieHolder>.BaseViewHolder<ItemMovieBinding> {
 
         public MovieHolder(View itemView) {
             super(itemView);
@@ -93,17 +61,17 @@ public class MovieAdapter extends BaseRecycleViewAdapter<MovieAdapter.MovieHolde
 
 
             if (movieEntity.getAdult()) {
-                getViewBinding().movieAdult.setBackground(context.getDrawable(R.drawable.ic_adult_rated));
+                getViewDataBinding().movieAdult.setBackground(context.getDrawable(R.drawable.ic_adult_rated));
             } else {
-                getViewBinding().movieAdult.setBackground(context.getDrawable(R.drawable.ic_under_rated));
+                getViewDataBinding().movieAdult.setBackground(context.getDrawable(R.drawable.ic_under_rated));
             }
-            getViewBinding().movieName.setText(movieEntity.getTitle());
-            getViewBinding().imageReleaseDate.setText(context.getString(R.string.release_date) + movieEntity.getReleaseDate());
-            getViewBinding().imageRating.setRating((float) movieEntity.getVoteAverage() / 2);
+            getViewDataBinding().movieName.setText(movieEntity.getTitle());
+            getViewDataBinding().imageReleaseDate.setText(context.getString(R.string.release_date) + movieEntity.getReleaseDate());
+            getViewDataBinding().imageRating.setRating((float) movieEntity.getVoteAverage() / 2);
 
             Picasso.with(context)
                     .load("http://image.tmdb.org/t/p/w185" + movieEntity.getPosterPath())
-                    .into(getViewBinding().movieImage);
+                    .into(getViewDataBinding().movieImage);
 
             final Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra("movie_id", movieEntity.getId());

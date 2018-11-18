@@ -36,7 +36,7 @@ public class PopularFragment extends BaseFragment<FragmentPopularBinding, Popula
     public void init(View view, Bundle savedInstances) {
 
         getViewDataBinding().popularGridView.setLayoutManager(gridLayoutManager);
-        getViewModel().getData(getString(R.string.movies_apis));
+        getViewModel().getData(getString(R.string.movies_apis),getContext());
     }
 
     @Override
@@ -48,10 +48,10 @@ public class PopularFragment extends BaseFragment<FragmentPopularBinding, Popula
     public void populateList(List<MoviesResponse.MovieEntity> results) {
         if (adapter == null) {
 
-            getViewDataBinding().popularGridView.setAdapter(adapter = new MovieAdapter(getContext(), results, getViewDataBinding().popularGridView, new MovieAdapter.OnLoadMoreListener() {
+            getViewDataBinding().popularGridView.setAdapter(adapter = new MovieAdapter(results, getContext(), false, getViewDataBinding().popularGridView, new MovieAdapter.OnLoadMoreListener() {
                 @Override
                 public void onLoadMore() {
-                    getViewModel().getData(getString(R.string.movies_apis));
+                    getViewModel().getData(getString(R.string.movies_apis), getContext());
                 }
             }));
 

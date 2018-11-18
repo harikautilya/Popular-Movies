@@ -3,25 +3,23 @@ package com.movies.book.ui.details;
 import android.content.Context;
 import android.databinding.ObservableField;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
 import com.movies.book.Base.Classes.BaseViewModel;
 import com.movies.book.Base.DataManager;
 import com.movies.book.Base.rx.SchedulerProvider;
 import com.movies.book.api.RequestFactory;
+import com.movies.book.api.ServerCallBack;
 import com.movies.book.api.request.MovieListService;
 import com.movies.book.api.response.MovieDetailResponse;
+import com.movies.book.api.response.MovieReviewResponse;
+import com.movies.book.api.response.MovieVideoResponse;
 import com.movies.book.storage.BaseDataPackage;
-
-import io.reactivex.Observable;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DetailViewModel extends BaseViewModel<DetailNavigator> {
 
     public ObservableField<MovieDetailResponse> movieDetailResponse;
-    public Observable<String> dasdas;
+    private ReviewAdapter adapter;
+    private VideoAdapter videoAdapter;
 
     public DetailViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, BaseDataPackage baseDataPackage) {
         super(dataManager, schedulerProvider, baseDataPackage);
@@ -34,19 +32,33 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
     }
 
 
-    public void getData(String api, long movieID) {
+    public void getData(String api, long movieID, Context context) {
         MovieListService movieListService = RequestFactory.createRetroFitService(MovieListService.class);
 
         movieListService.getMovieDetails(movieID, api)
-                .enqueue(new Callback<MovieDetailResponse>() {
+                .enqueue(new ServerCallBack<MovieDetailResponse>(context, true) {
+
                     @Override
-                    public void onResponse(@NonNull Call<MovieDetailResponse> call, @NonNull Response<MovieDetailResponse> response) {
-                        movieDetailResponse.set(response.body());
+                    public void onResponse(MovieDetailResponse response) {
+                        movieDetailResponse.set(response);
                     }
+                });
+
+        movieListService.getMovieReviews(movieID, api)
+                .enqueue(new ServerCallBack<MovieReviewResponse>(context, true) {
 
                     @Override
-                    public void onFailure(@NonNull Call<MovieDetailResponse> call, @NonNull Throwable t) {
+                    public void onResponse(MovieReviewResponse response) {
+                        adapter.addMoreData(response.getResults());
+                    }
+                });
 
+        movieListService.getMovieVideos(movieID, api)
+                .enqueue(new ServerCallBack<MovieVideoResponse>(context, true) {
+
+                    @Override
+                    public void onResponse(MovieVideoResponse response) {
+                        videoAdapter.addMoreData(response.getResults());
                     }
                 });
 

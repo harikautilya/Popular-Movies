@@ -5,4 +5,11 @@ import com.movies.book.api.response.MovieDetailResponse;
 
 public interface DetailNavigator extends BaseNavigator {
     void updateData(MovieDetailResponse body);
+
+
+    void setTrailers(VideoAdapter videoAdapter);
+
+    void setReviews(ReviewAdapter reviewAdapter);
+
+
 }

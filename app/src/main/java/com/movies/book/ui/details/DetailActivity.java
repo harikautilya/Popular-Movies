@@ -29,7 +29,7 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
     @Override
     public void init(@Nullable Bundle savedInstanceState) {
 
-        getViewModel().getData(getString(R.string.movies_apis), getIntent().getIntExtra("movie_id", -1));
+        getViewModel().getData(getString(R.string.movies_apis), getIntent().getIntExtra("movie_id", -1), this);
 
 
         sheetBehavior = BottomSheetBehavior.from(getViewDataBinding().dataSheet.getRoot());
@@ -64,5 +64,15 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailVi
     public void updateData(MovieDetailResponse body) {
 
 
+    }
+
+    @Override
+    public void setTrailers(VideoAdapter videoAdapter) {
+        getViewDataBinding().dataSheet.trailers.setAdapter(videoAdapter);
+    }
+
+    @Override
+    public void setReviews(ReviewAdapter reviewAdapter) {
+        getViewDataBinding().dataSheet.reviews.setAdapter(reviewAdapter);
     }
 }
