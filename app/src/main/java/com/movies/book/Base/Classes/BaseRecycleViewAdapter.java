@@ -69,6 +69,13 @@ public abstract class BaseRecycleViewAdapter<T, K extends BaseRecycleViewAdapter
         notifyItemRangeInserted(start, getItemCount());
     }
 
+    public void clear() {
+        data.clear();
+        if (storage != null)
+            storage.clear();
+        notifyDataSetChanged();
+    }
+
     public abstract class BaseViewHolder<L extends ViewDataBinding> extends RecyclerView.ViewHolder {
         protected String LOG_TAG = this.getClass().getName();
 

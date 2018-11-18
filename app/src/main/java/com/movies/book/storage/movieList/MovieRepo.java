@@ -11,4 +11,9 @@ public class MovieRepo {
     }
 
 
+    void createTable() {
+        remoteData.getMovieList();
+    }
+
+
 }

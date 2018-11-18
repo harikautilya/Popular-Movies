@@ -27,21 +27,50 @@
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <com.movies.book.views.ViewPagerIndicator
-                android:id="@+id/mainTabLayout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="6dp"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:tabMaxWidth="0dp" />
+                android:orientation="horizontal">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/mainViewpager"
+                <Button
+                    android:id="@+id/top"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/child_margin"
+                    android:layout_weight="1"
+                    android:text="Top Movies"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/medium_text" />
+
+                <Button
+                    android:id="@+id/pop"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/child_margin"
+                    android:layout_weight="1"
+                    android:text="Popular Movies"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/medium_text" />
+
+                <ImageView
+                    android:id="@+id/fav"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/child_margin"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_favorite"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/medium_text" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/movies_list"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:paddingTop="10dp" />
-
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/child_margin" />
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 

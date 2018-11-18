@@ -1,4 +1,12 @@
 package com.movies.book.storage.movieList;
 
+import com.movies.book.api.response.MoviesResponse;
+
+import java.util.List;
+
 public interface MovieData {
+
+    List<MoviesResponse.MovieEntity> getMovieList();
+
+
 }

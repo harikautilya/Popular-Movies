@@ -39,4 +39,5 @@ public class TopVIewModel extends BaseViewModel<TopNavigator> {
                     }
                 });
     }
+
 }

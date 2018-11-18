@@ -13,7 +13,7 @@ import com.movies.book.ui.main.MovieAdapter;
 import java.util.List;
 
 import javax.inject.Inject;
-
+@Deprecated
 public class TopFragment extends BaseFragment<FragmentTopBinding, TopVIewModel, TopNavigator> implements TopNavigator {
 
 
