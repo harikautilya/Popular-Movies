@@ -11,13 +11,10 @@ import android.view.ViewGroup;
 import com.movies.book.R;
 
 public class TagView extends ViewGroup {
-    /** The amount of space used by children in the left gutter. */
-    private int mLeftWidth;
 
-    /** The amount of space used by children in the right gutter. */
+    private int mLeftWidth;
     private int mRightWidth;
 
-    /** These are used for computing child frames based on their gravity. */
     private final Rect mTmpContainerRect = new Rect();
     private final Rect mTmpChildRect = new Rect();
 
@@ -33,65 +30,55 @@ public class TagView extends ViewGroup {
         super(context, attrs, defStyle);
     }
 
-    /**
-     * Any layout manager that doesn't scroll will want this.
-     */
+
     @Override
     public boolean shouldDelayChildPressedState() {
         return false;
     }
 
-    /**
-     * Ask all children to measure themselves and compute the measurement of this
-     * layout based on the children.
-     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int count = getChildCount();
 
-        // These keep track of the space we are using on the left and right for
-        // views positioned there; we need member variables so we can also use
-        // these for layout later.
         mLeftWidth = 0;
         mRightWidth = 0;
 
-        // Measurement will ultimately be computing these values.
         int maxHeight = 0;
         int maxWidth = 0;
         int childState = 0;
+        int usedWidth = 0;
+        int usedHeight = 0;
 
-        // Iterate through all children, measuring them and computing our dimensions
-        // from their size.
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
                 // Measure the child.
-                measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
+                measureChildWithMargins(child, widthMeasureSpec, usedWidth, heightMeasureSpec, 0);
 
                 // Update our size information based on the layout params.  Children
                 // that asked to be positioned on the left or right go in those gutters.
                 final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                if (lp.position == LayoutParams.POSITION_LEFT) {
-                    mLeftWidth += Math.max(maxWidth,
-                            child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
-                } else if (lp.position == LayoutParams.POSITION_RIGHT) {
-                    mRightWidth += Math.max(maxWidth,
-                            child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
-                } else {
-                    maxWidth = Math.max(maxWidth,
-                            child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
+                mLeftWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
+                if (usedWidth + mLeftWidth >= getMeasuredWidth()) {
+                    maxWidth = Math.max(usedWidth, maxWidth);
+                    usedWidth = 0;
+                    usedHeight += maxHeight;
+                    measureChildWithMargins(child, widthMeasureSpec, usedWidth, heightMeasureSpec, 0);
+                    mLeftWidth = child.getMeasuredWidth() + lp.leftMargin + lp.rightMargin;
                 }
+
                 maxHeight = Math.max(maxHeight,
                         child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
                 childState = combineMeasuredStates(childState, child.getMeasuredState());
+
+                usedWidth += mLeftWidth;
             }
         }
-
-        // Total width is the maximum width of all inner children plus the gutters.
-        maxWidth += mLeftWidth + mRightWidth;
+        usedHeight += maxHeight;
+        maxWidth = Math.max(usedWidth, maxWidth);
 
         // Check against our minimum height and width
-        maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
+        maxHeight = Math.max(usedHeight, getSuggestedMinimumHeight());
         maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
 
         // Report our final dimensions.
@@ -100,9 +87,7 @@ public class TagView extends ViewGroup {
                         childState << MEASURED_HEIGHT_STATE_SHIFT));
     }
 
-    /**
-     * Position all children within this layout.
-     */
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         final int count = getChildCount();
@@ -116,9 +101,9 @@ public class TagView extends ViewGroup {
         final int middleRight = rightPos - mRightWidth;
 
         // These are the top and bottom edges in which we are performing layout.
-        final int parentTop = getPaddingTop();
-        final int parentBottom = bottom - top - getPaddingBottom();
-
+        int parentTop = getPaddingTop();
+        int parentBottom = bottom - top - getPaddingBottom();
+        int shiftHeight = 0;
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
@@ -126,20 +111,20 @@ public class TagView extends ViewGroup {
 
                 final int width = child.getMeasuredWidth();
                 final int height = child.getMeasuredHeight();
-
+                shiftHeight = Math.max(shiftHeight, height);
                 // Compute the frame in which we are placing this child.
-                if (lp.position == LayoutParams.POSITION_LEFT) {
+                mTmpContainerRect.left = leftPos + lp.leftMargin;
+                mTmpContainerRect.right = leftPos + width + lp.rightMargin;
+                leftPos = mTmpContainerRect.right;
+
+
+                if (mTmpContainerRect.right > rightPos) {
+                    leftPos = getPaddingLeft();
                     mTmpContainerRect.left = leftPos + lp.leftMargin;
-                    mTmpContainerRect.right = leftPos + width + lp.rightMargin;
-                    leftPos = mTmpContainerRect.right;
-                } else if (lp.position == LayoutParams.POSITION_RIGHT) {
-                    mTmpContainerRect.right = rightPos - lp.rightMargin;
-                    mTmpContainerRect.left = rightPos - width - lp.leftMargin;
-                    rightPos = mTmpContainerRect.left;
-                } else {
-                    mTmpContainerRect.left = middleLeft + lp.leftMargin;
-                    mTmpContainerRect.right = middleRight - lp.rightMargin;
+                    parentTop = shiftHeight + parentTop;
+                    parentBottom = parentTop + height;
                 }
+
                 mTmpContainerRect.top = parentTop + lp.topMargin;
                 mTmpContainerRect.bottom = parentBottom - lp.bottomMargin;
 
@@ -154,10 +139,6 @@ public class TagView extends ViewGroup {
         }
     }
 
-    // ----------------------------------------------------------------------
-    // The rest of the implementation is for custom per-child layout parameters.
-    // If you do not need these (for example you are writing a layout manager
-    // that does fixed positioning of its children), you can drop all of this.
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -179,21 +160,12 @@ public class TagView extends ViewGroup {
         return p instanceof LayoutParams;
     }
 
-    /**
-     * Custom per-child layout information.
-     */
+
     public static class LayoutParams extends MarginLayoutParams {
-        /**
-         * The gravity to apply with the View to which these layout parameters
-         * are associated.
-         */
+
+
         public int gravity = Gravity.TOP | Gravity.START;
 
-        public static int POSITION_MIDDLE = 0;
-        public static int POSITION_LEFT = 1;
-        public static int POSITION_RIGHT = 2;
-
-        public int position = POSITION_MIDDLE;
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
@@ -201,9 +173,8 @@ public class TagView extends ViewGroup {
             // Pull the layout param values from the layout XML during
             // inflation.  This is not needed if you don't care about
             // changing the layout behavior in XML.
-            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.TagView);
-            gravity = a.getInt(R.styleable.TagView_android_layout_gravity, gravity);
-            position = a.getInt(R.styleable.TagView_layout_position, position);
+            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.TagView_Layout);
+            gravity = a.getInt(R.styleable.TagView_Layout_android_layout_gravity, gravity);
             a.recycle();
         }
 

@@ -70,7 +70,7 @@ public class MovieAdapter extends BaseRecycleViewAdapter<MoviesResponse.MovieEnt
             getViewDataBinding().imageRating.setRating((float) movieEntity.getVoteAverage() / 2);
 
             Picasso.with(context)
-                    .load("http://image.tmdb.org/t/p/w185" + movieEntity.getPosterPath())
+                    .load(context.getString(R.string.small_image) + movieEntity.getPosterPath())
                     .into(getViewDataBinding().movieImage);
 
             final Intent intent = new Intent(context, DetailActivity.class);

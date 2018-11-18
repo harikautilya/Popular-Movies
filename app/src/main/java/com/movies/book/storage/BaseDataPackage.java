@@ -1,15 +1,15 @@
 package com.movies.book.storage;
 
 import com.movies.book.Base.DBHelper;
-import com.movies.book.storage.match.MatchRepo;
-import com.movies.book.storage.match.cloud.CloudMatchBaseData;
-import com.movies.book.storage.match.local.LocalMatchBaseData;
+import com.movies.book.storage.movieList.MovieRepo;
+import com.movies.book.storage.movieList.cloud.CloudMovieDataBase;
+import com.movies.book.storage.movieList.local.LocalMovieDataBase;
 
 import javax.inject.Inject;
 
 public class BaseDataPackage implements BaseDataRepo {
 
-    private MatchRepo matchRepo;
+    private MovieRepo matchRepo;
     private DBHelper dbHelper;
 
     @Inject
@@ -17,10 +17,11 @@ public class BaseDataPackage implements BaseDataRepo {
         this.dbHelper = dbHelper;
     }
 
+
     @Override
-    public MatchRepo provideMatchRepo() {
+    public MovieRepo provideMovieRepo() {
         if (matchRepo == null)
-            return matchRepo = new MatchRepo(LocalMatchBaseData.get(dbHelper), CloudMatchBaseData.get());
+            return matchRepo = new MovieRepo(LocalMovieDataBase.get(dbHelper), CloudMovieDataBase.get());
         else
             return matchRepo;
     }

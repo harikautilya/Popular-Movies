@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.movies.book.Base.Classes.BaseRecycleViewAdapter;
 import com.movies.book.R;
 import com.movies.book.api.response.MovieReviewResponse;
@@ -15,7 +14,7 @@ import com.movies.book.databinding.ItemReviewBinding;
 import java.util.List;
 
 
-public class ReviewAdapter extends BaseRecycleViewAdapter<MovieReviewResponse.ResultsEntity,ReviewAdapter.ReviewHolder> {
+public class ReviewAdapter extends BaseRecycleViewAdapter<MovieReviewResponse.ResultsEntity, ReviewAdapter.ReviewHolder> {
 
 
     public ReviewAdapter(List<MovieReviewResponse.ResultsEntity> data, Context context, boolean filterable) {
@@ -28,10 +27,17 @@ public class ReviewAdapter extends BaseRecycleViewAdapter<MovieReviewResponse.Re
         return new ReviewHolder(LayoutInflater.from(context).inflate(R.layout.item_review, parent, false));
     }
 
-    class ReviewHolder extends BaseRecycleViewAdapter<MovieReviewResponse.ResultsEntity,ReviewHolder>.BaseViewHolder<ItemReviewBinding> {
+    class ReviewHolder extends BaseRecycleViewAdapter<MovieReviewResponse.ResultsEntity, ReviewHolder>.BaseViewHolder<ItemReviewBinding> {
 
         public ReviewHolder(View itemView) {
             super(itemView);
+        }
+
+        @Override
+        protected void bind(MovieReviewResponse.ResultsEntity object) {
+            super.bind(object);
+            getViewDataBinding().authorName.setText(object.getAuthor());
+            getViewDataBinding().review.setText(object.getContent());
         }
     }
 }

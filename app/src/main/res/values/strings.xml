@@ -11,4 +11,13 @@
     <string name="movie_description">Movie Description</string>
     <string name="login_title">BnC</string>
     <string name="server_error">Issue fetching Data from server</string>
+
+    <string name="micro_image">http://image.tmdb.org/t/p/w92</string>
+    <string name="tiny_image">http://image.tmdb.org/t/p/w154</string>
+    <string name="small_image">http://image.tmdb.org/t/p/w185</string>
+    <string name="medium_image">http://image.tmdb.org/t/p/w342</string>
+    <string name="large_image">http://image.tmdb.org/t/p/w500</string>
+    <string name="huge_image">http://image.tmdb.org/t/p/w780</string>
+    <string name="originial_image">http://image.tmdb.org/t/p/original</string>
+
 </resources>

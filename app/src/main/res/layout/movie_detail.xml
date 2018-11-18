@@ -9,91 +9,124 @@
             type="com.movies.book.api.response.MovieDetailResponse" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="56dp"
-        android:background="@android:color/white"
-        android:orientation="vertical"
+        app:behavior_peekHeight="@dimen/bottom_bar_height"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/backdrop"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{detail.title}" />
-        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/movie_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="@dimen/child_margin"
-                android:contentDescription="@string/image_of_the_movie"
-                android:src="@drawable/sample8" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/child_margin"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:background="@android:color/white"
+                android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/child_margin"
-                    android:text="@{detail.original_title}"
-                    tools:text="Sample" />
+                    android:layout_height="@dimen/bottom_bar_height"
+                    android:text="@{detail.title}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/title_big_text"
+                    android:textStyle="bold" />
 
-                <com.movies.book.views.TagView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/movie_image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="@dimen/child_margin"
+                        android:contentDescription="@string/image_of_the_movie"
+                        android:src="@drawable/sample8" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/child_margin"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/child_margin"
+                            android:text="@{detail.original_title}"
+                            tools:text="Sample" />
+
+                        <com.movies.book.views.TagView
+                            android:id="@+id/tags"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/child_margin">
+
+
+                        </com.movies.book.views.TagView>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/child_padding"
+                    android:text="@{detail.overview}"
+                    tools:text="Through a series of daring escapades deep within a dark and dangerous criminal underworld, Han Solo meets his mighty future copilot Chewbacca and encounters the notorious gambler Lando Calrissian." />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/child_padding"
+                    android:text="Reviews"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/title_text" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/child_margin"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/item_genre" />
+                    android:isScrollContainer="false"
+                    android:nestedScrollingEnabled="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/child_padding"
+                    android:text="Trailers"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/title_text" />
+
 
             </LinearLayout>
 
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/trailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/child_margin"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_video" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/child_margin"
-            android:text="@{detail.overview}"
-            tools:text="Through a series of daring escapades deep within a dark and dangerous criminal underworld, Han Solo meets his mighty future copilot Chewbacca and encounters the notorious gambler Lando Calrissian." />
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/trailers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/child_margin" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/reviews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/child_margin" />
-
-
-    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </layout>

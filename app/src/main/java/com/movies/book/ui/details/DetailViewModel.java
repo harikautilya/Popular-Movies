@@ -15,6 +15,8 @@ import com.movies.book.api.response.MovieReviewResponse;
 import com.movies.book.api.response.MovieVideoResponse;
 import com.movies.book.storage.BaseDataPackage;
 
+import java.util.ArrayList;
+
 public class DetailViewModel extends BaseViewModel<DetailNavigator> {
 
     public ObservableField<MovieDetailResponse> movieDetailResponse;
@@ -24,10 +26,13 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
     public DetailViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, BaseDataPackage baseDataPackage) {
         super(dataManager, schedulerProvider, baseDataPackage);
         movieDetailResponse = new ObservableField<>();
+
     }
 
     @Override
     public void init(Bundle savedInstanceState, Context context) {
+        getNavigator().setReviews(adapter = new ReviewAdapter(new ArrayList<MovieReviewResponse.ResultsEntity>(), context, false));
+        getNavigator().setTrailers(videoAdapter = new VideoAdapter(new ArrayList<MovieVideoResponse.ResultsEntity>(), context, false));
 
     }
 
@@ -41,6 +46,7 @@ public class DetailViewModel extends BaseViewModel<DetailNavigator> {
                     @Override
                     public void onResponse(MovieDetailResponse response) {
                         movieDetailResponse.set(response);
+                        getNavigator().updateData(response);
                     }
                 });
 
