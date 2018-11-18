@@ -1,7 +1,6 @@
 package com.movies.book.storage.movieList.local;
 
 import com.movies.book.Base.DBHelper;
-import com.movies.book.storage.match.local.LocalMatchBaseData;
 import com.movies.book.storage.movieList.MovieData;
 
 public class LocalMovieDataBase implements MovieData {
@@ -12,7 +11,7 @@ public class LocalMovieDataBase implements MovieData {
 
     public static LocalMovieDataBase get(DBHelper dbHelper) {
         if (INSTANCE == null) {
-            synchronized (LocalMatchBaseData.class) {
+            synchronized (LocalMovieDataBase.class) {
                 if (INSTANCE == null)
                     return INSTANCE = new LocalMovieDataBase(dbHelper);
             }
